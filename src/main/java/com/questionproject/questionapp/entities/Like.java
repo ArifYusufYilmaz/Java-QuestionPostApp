@@ -8,14 +8,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="users")
+@Table(name ="likes")
 @Data
-public class User {
+public class Like {
     @Id
-    @Column(name="id")
-   private Long id;
-    @Column(name="user_name")
-   private String userName;
-    @Column(name="user_password")
-   private String password;
+    @Column(name ="id")
+    private Long id;
+    @Column(name= "post_id")
+    private Long postId;
+    @Column(name="user_id")
+    private Long userId;
 }
