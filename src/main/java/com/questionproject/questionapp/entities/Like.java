@@ -1,11 +1,11 @@
 package com.questionproject.questionapp.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name ="likes")
@@ -14,8 +14,20 @@ public class Like {
     @Id
     @Column(name ="id")
     private Long id;
-    @Column(name= "post_id")
-    private Long postId;
-    @Column(name="user_id")
-    private Long userId;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name= "post_id", nullable = false)
+    // bir Post silindiğinde onun tüm like ları da silinsin.
+    @OnDelete(action= OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private Post post;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name= "user_id", nullable = false)
+    // bir user silindiğinde onun tüm like ları da silinsin.
+    @OnDelete(action= OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private User user;
+
 }
