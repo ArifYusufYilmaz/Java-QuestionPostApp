@@ -27,7 +27,7 @@ public class Post {
 
     @Column(name="title")
     private String title;
-    @Lob
-    @Column(name ="text", columnDefinition="text")
+    //@Lob
+    @Column(name ="text", columnDefinition="TEXT")
     private String text;
 }

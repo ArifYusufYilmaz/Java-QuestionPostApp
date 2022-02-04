@@ -34,8 +34,8 @@ public class Comment {
     private User user;
 
 
-    @Lob // ?
-    @Column(name="text", columnDefinition = "text")
+   // @Lob // ?
+    @Column(name="text", columnDefinition = "TEXT")
     //Stringi varchar(255) olarak değil de text olarak algılaması için definiton ifade edildi.
     private String text;
 }
