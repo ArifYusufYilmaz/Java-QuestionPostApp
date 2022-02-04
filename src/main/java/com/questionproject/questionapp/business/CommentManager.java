@@ -53,7 +53,7 @@ public class CommentManager {
     }
 
     public Comment createOneComment(CommentCreateRequest newCommentRequest) {
-        User user = userManager.getOneUser(newCommentRequest.getUserId());
+        User user = userManager.getOneUserById(newCommentRequest.getUserId());
         Post post = postManager.getOnePostById(newCommentRequest.getPostId());
         if(user == null || post == null)
                     return null;

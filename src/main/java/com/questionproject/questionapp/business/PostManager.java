@@ -35,7 +35,7 @@ public class PostManager {
     }
 
     public Post createOnePost(PostCreateRequest newPostRequest) {
-        User user = userManager.getOneUser(newPostRequest.getUserId());
+        User user = userManager.getOneUserById(newPostRequest.getUserId());
         if(user == null)
             return null; // şimdilik.
         Post toSave = new Post();

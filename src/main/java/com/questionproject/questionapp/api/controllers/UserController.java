@@ -28,8 +28,8 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public User getOneUser(@PathVariable Long userId){
-        return userManager.getOneUser(userId);
+    public User getOneUserById(@PathVariable Long userId){
+        return userManager.getOneUserById(userId);
     }
 
     @PutMapping("/{userId}")

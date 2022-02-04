@@ -26,7 +26,7 @@ public class UserManager {
         return userDao.save(newUser);
     }
 
-    public User getOneUser(Long userId) {
+    public User getOneUserById(Long userId) {
         //custom exception
         return userDao.findById(userId).orElse(null);
     }
