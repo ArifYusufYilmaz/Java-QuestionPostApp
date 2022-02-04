@@ -1,5 +1,6 @@
 package com.questionproject.questionapp.api.controllers;
 
+import com.questionproject.questionapp.business.UserManager;
 import com.questionproject.questionapp.dataAccess.UserDao;
 import com.questionproject.questionapp.entities.User;
 import org.springframework.web.bind.annotation.*;
@@ -10,49 +11,35 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private UserDao userDao;
+    private UserManager userManager;
     // Autowired, constructor injection, setter injection gibi yöntemler var.
-    public UserController(UserDao userDao){
-        this.userDao=userDao;
+    public UserController(UserManager userManager){
+        this.userManager = userManager;
     }
 
     @GetMapping
     public List<User> getAllUsers(){
-        return userDao.findAll();
+        return userManager.getAllUsers();
     }
 
     @PostMapping
-    public User createUser(@RequestBody User newUSer){
-        return userDao.save(newUSer);
+    public User createUser(@RequestBody User newUser){
+        return userManager.saveOneUser(newUser);
     }
+
     @GetMapping("/{userId}")
     public User getOneUser(@PathVariable Long userId){
-         // bu user db'mizde olmayabilir.
-         // Şimdilik bulamazsa null dönsün.
-         // custom exception ekle
-        return userDao.findById(userId).orElse(null);
+        return userManager.getOneUser(userId);
     }
-    // Varolan id'li bir user ı değiştirebiliriz
+
     @PutMapping("/{userId}")
     public User updateOneUser(@PathVariable Long userId, @RequestBody User newUser){
-        // update edilmek istenen kullanıcıya ait id db'de aranır,
-        // varsa @RequestBody ile user objesi şeklinde alınan update edilmek istenen veriler set edilir.
-        Optional<User> user = userDao.findById(userId);
-        if(user.isPresent()){
-            User foundUser = user.get();
-            foundUser.setUserName(newUser.getUserName());
-            foundUser.setPassword(newUser.getPassword());
-            userDao.save(foundUser);
-            return foundUser;
-        } else{
-            //custom exception ekle
-            return null;
-        }
+         return userManager.updateOneUser(userId, newUser);
    }
-   //spesifik bir user için silme isteği,
+
    @DeleteMapping("/{userId}")
     public void deleteOneUser(@PathVariable Long userId){
-        userDao.deleteById(userId);
+       userManager.deleteById(userId);
     }
 }
 
