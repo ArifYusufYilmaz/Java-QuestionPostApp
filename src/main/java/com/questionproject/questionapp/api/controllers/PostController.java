@@ -4,6 +4,7 @@ import com.questionproject.questionapp.business.PostManager;
 import com.questionproject.questionapp.entities.Post;
 import com.questionproject.questionapp.requests.PostCreateRequest;
 import com.questionproject.questionapp.requests.PostUpdateRequest;
+import com.questionproject.questionapp.responses.PostResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class PostController {
     // RequestParam-> Bize gelen istekteki parametreli parse et ve sağımda bulunan değişkenlerin içerisine at.
     // Sıkıntı çıkaran Optinal' ı kullanmak yerine required=false diyerek userId alma zorunluluğunu ortadan kaldırdım.
     @GetMapping
-    public List<Post> getAllPosts(@RequestParam(required = false) Long userId) {
+    public List<PostResponse> getAllPosts(@RequestParam(required = false) Long userId) {
         return postManager.getAllPosts(userId);
     }
     @PostMapping

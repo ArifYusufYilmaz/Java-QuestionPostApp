@@ -5,10 +5,12 @@ import com.questionproject.questionapp.entities.Post;
 import com.questionproject.questionapp.entities.User;
 import com.questionproject.questionapp.requests.PostCreateRequest;
 import com.questionproject.questionapp.requests.PostUpdateRequest;
+import com.questionproject.questionapp.responses.PostResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PostManager {
@@ -19,14 +21,16 @@ public class PostManager {
         this.userManager= userManager;
     }
 
-    public List<Post> getAllPosts(Long userId) { // Optinal'ı sistemden çıkardım çünkü gerek yok.->controller'a git.
+    public List<PostResponse> getAllPosts(Long userId) {
+        List<Post> list;
         if(userId != null) {
-         //   System.out.println(userId);
-         //   System.out.println(postDao.findByUserId(userId.get()));
-            return postDao.findByUserId(userId);
+            list = postDao.findByUserId(userId);
+
         }
-       // System.out.println(postDao.findByUserId(userId.get()));
-            return postDao.findAll();
+        else{ list =  postDao.findAll(); }
+        return list.stream().map(p -> new PostResponse(p)).collect(Collectors.toList());
+
+
 
     }
 
