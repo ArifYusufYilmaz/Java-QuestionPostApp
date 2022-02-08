@@ -1,11 +1,14 @@
 package com.questionproject.questionapp.business;
 
 import com.questionproject.questionapp.dataAccess.PostDao;
+import com.questionproject.questionapp.entities.Like;
 import com.questionproject.questionapp.entities.Post;
 import com.questionproject.questionapp.entities.User;
 import com.questionproject.questionapp.requests.PostCreateRequest;
 import com.questionproject.questionapp.requests.PostUpdateRequest;
+import com.questionproject.questionapp.responses.LikeResponse;
 import com.questionproject.questionapp.responses.PostResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,21 +19,32 @@ import java.util.stream.Collectors;
 public class PostManager {
     private PostDao postDao;
     private UserManager userManager;
-    public PostManager(PostDao postDao,UserManager userManager) {
+    private LikeManager likeManager;
+    public PostManager(PostDao postDao,
+                       UserManager userManager) {
         this.postDao = postDao;
         this.userManager= userManager;
     }
+    // kurucuyla atarsam birbirlerini çağırırlar sonsuza gider.
+    //@Autowired olmadığı zaman nullpointerexception veriyor!
+    @Autowired
+    public void setLikeManager(LikeManager likeManager){
+        this.likeManager = likeManager;
+    }
 
     public List<PostResponse> getAllPosts(Long userId) {
-        List<Post> list;
+        List<Post> listPost;
         if(userId != null) {
-            list = postDao.findByUserId(userId);
-
+            listPost = postDao.findByUserId(userId);
         }
-        else{ list =  postDao.findAll(); }
-        return list.stream().map(p -> new PostResponse(p)).collect(Collectors.toList());
+        // her bir post için gidip onun like'larını çek.
+        // PostResponse objesi oluştururken o like listesini de parametre olarak ver.
+        else{ listPost =  postDao.findAll();}
 
-
+        return listPost.stream().map(post -> {
+            List<LikeResponse> likes = likeManager.getAllLikesWithParams(null, post.getId());
+            return new PostResponse(post, likes);
+        }).collect(Collectors.toList());
 
     }
 

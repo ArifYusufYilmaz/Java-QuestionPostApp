@@ -32,9 +32,7 @@ public class CommentManager {
     }
 
     public List<Comment> getAllCommentsWithParams(Long userId, Long postId) {
-        System.out.println("fonksiyondayım");
-        System.out.println("postId : "+ postId);
-        System.out.println("userId : "+userId);
+
         if(userId != null && postId != null) {
             return commentDao.findByUserIdAndPostId(userId, postId);
         }

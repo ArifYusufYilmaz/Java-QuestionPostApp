@@ -5,9 +5,11 @@ import com.questionproject.questionapp.entities.Like;
 import com.questionproject.questionapp.entities.Post;
 import com.questionproject.questionapp.entities.User;
 import com.questionproject.questionapp.requests.LikeCreateRequest;
+import com.questionproject.questionapp.responses.LikeResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LikeManager {
@@ -21,18 +23,20 @@ public class LikeManager {
         this.postManager = postManager;
     }
 
-    public List<Like> getAllLikesWithParams(Long userId, Long postId) {
+    public List<LikeResponse> getAllLikesWithParams(Long userId, Long postId) {
+        List<Like> listLikes;
         if(userId != null && postId != null){
-            return likeDao.findByUserIdAndPostId(userId, postId);
+            listLikes = likeDao.findByUserIdAndPostId(userId, postId);
         }
         else if(userId != null){
-            return likeDao.findByUserId(userId);
+            listLikes = likeDao.findByUserId(userId);
         }
         else if(postId != null){
-            return likeDao.findByPostId(postId);
+            listLikes = likeDao.findByPostId(postId);
         }else{
-            return likeDao.findAll();
+            listLikes = likeDao.findAll();
         }
+        return listLikes.stream().map(like-> new LikeResponse(like)).collect(Collectors.toList());
     }
 
     public Like getOneLikeById(Long likeId) {
