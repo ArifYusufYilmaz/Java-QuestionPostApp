@@ -13,6 +13,7 @@ import javax.persistence.*;
 public class Like {
     @Id
     @Column(name ="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 

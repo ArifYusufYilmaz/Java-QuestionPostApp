@@ -14,6 +14,7 @@ import javax.persistence.*;
 public class Post {
     @Id
     @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     // lazy loading=> post verilerini çektiğimde hemen user bilgisini getirme.
