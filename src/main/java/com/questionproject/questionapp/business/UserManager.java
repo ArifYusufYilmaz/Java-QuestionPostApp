@@ -48,4 +48,8 @@ public class UserManager {
     public void deleteById(Long userId) {
         userDao.deleteById(userId);
     }
+
+    public User getOneUserByUserName(String userName) {
+        return userDao.findByUserName(userName);
+    }
 }
